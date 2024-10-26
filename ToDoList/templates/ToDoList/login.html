@@ -1,3 +1,4 @@
+{% extends 'ToDoList/main.html' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,13 +9,17 @@
 
 <h1>Login</h1>
 
-<form method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit" value="Login">
-</form>
+{% block content %}
 
-<p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
+    <form method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Login">
+    </form>
+
+    <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
+
+{% endblock content %}
 
 </body>
 </html>

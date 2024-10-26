@@ -1,3 +1,4 @@
+{% extends 'ToDoList/main.html' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,16 +7,21 @@
 </head>
 <body>
 
-<h3>Category Form</h3>
-<a href="{% url 'tasks-page' %}">Go Back</a>
+{% block content %}
 
-<form method="POST" action="">
+    <h3>Category Form</h3>
+    <a href="{% url 'tasks-page' %}">Go Back</a>
 
-    {% csrf_token %}
-    {{form.as_p}}
+    <form method="POST" action="">
 
-    <input type="submit" value="Create">
-</form>
+        {% csrf_token %}
+        {{form.as_p}}
+
+        <input type="submit" value="Create">
+    </form>
+
+
+{% endblock content %}
 
 </body>
 </html>

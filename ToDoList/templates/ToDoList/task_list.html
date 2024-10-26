@@ -1,3 +1,4 @@
+{% extends 'ToDoList/main.html' %}
 {% load static %}
 
 <!DOCTYPE html>
@@ -10,74 +11,87 @@
 </head>
 <body>
 
-{% if request.user.is_authenticated %}
-<p>{{request.user}}</p>
-
-<form method="POST" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button type="submit">Logout</button>
-</form>
-
-{% else %}
-<a href="{% url 'login' %}">Login</a>
-{% endif %}
 
 
-<hr>
-<h1>To-Do List</h1>
+{% block content %}
+
+    <div class="header-bar">
+        <div>
+            <h1>Hello, {{request.user|title}}!</h1> 
+        </div>
+
+        {% if request.user.is_authenticated %}
+
+            <form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Logout</button>
+            </form>
+        
+        {% else %}
+            <a href="{% url 'login' %}">Login</a>
+        {% endif %}
+
+    </div>
+
+    
 
 
-
-
-<!-- Period Filter -->
-<div class="periods">
-    <a href="?{% if current_category %}category={{ current_category }}{% endif %}">All Time</a>
-    <a href="?period=today{% if current_category %}&category={{ current_category }}{% endif %}">Today</a>
-    <a href="?period=week{% if current_category %}&category={{ current_category }}{% endif %}">This Week</a>
-    <a href="?period=month{% if current_category %}&category={{ current_category }}{% endif %}">This Month</a>
-    <a href="?period=year{% if current_category %}&category={{ current_category }}{% endif %}">This Year</a>
-</div>
-
-<!-- Category Filter -->
-<div class="categories">
-    <ul>
-        <li><a href="{% url 'tasks-page' %}">All Categories</a></li>
-        {% for category in categories %}
-            <li><a href="?category={{ category.title }}">{{ category.title }}</a></li>
-        {% endfor %}
-        <li><a href="{% url 'category-create' %}">Add Category</a></li>
-    </ul>
-</div>
+    <hr>
+    <h1>To-Do List</h1>
 
 
 
 
-<a href="{% url 'task-create' %}">Add Task</a>
+    <!-- Period Filter -->
+    <div class="periods">
+        <a href="?{% if current_category %}category={{ current_category }}{% endif %}">All Time</a>
+        <a href="?period=today{% if current_category %}&category={{ current_category }}{% endif %}">Today</a>
+        <a href="?period=week{% if current_category %}&category={{ current_category }}{% endif %}">This Week</a>
+        <a href="?period=month{% if current_category %}&category={{ current_category }}{% endif %}">This Month</a>
+        <a href="?period=year{% if current_category %}&category={{ current_category }}{% endif %}">This Year</a>
+    </div>
 
-<form method="GET">
-    <input type="text" name="search-area">
-    <input type="submit" value="Search">
-</form>
+    <!-- Category Filter -->
+    <div class="categories">
+        <ul>
+            <li><a href="{% url 'tasks-page' %}">All Categories</a></li>
+            {% for category in categories %}
+                <li><a href="?category={{ category.title }}">{{ category.title }}</a></li>
+            {% endfor %}
+            <li><a href="{% url 'category-create' %}">Add Category</a></li>
+        </ul>
+    </div>
 
-<table>
-    <tr>
-        <th>Item</th>
-        <th></th>
-        <th></th>
-        <th></th>
-    </tr>
-    {% for task in uncompleted_tasks %}
+
+
+
+    <a href="{% url 'task-create' %}">Add Task</a>
+
+    <form method="GET">
+        <input type="text" name="search-area">
+        <input type="submit" value="Search">
+    </form>
+
+    <table>
         <tr>
-            <td>{{task.title}}</td>
-            <td><a href="{% url 'task' task.id %}">View</a></td>
-            <td><a href="{% url 'task-update' task.id %}">Edit</a></td>
-            <td><a href="{% url 'task-delete' task.id %}">Delete</a></td>
+            <th>Item</th>
+            <th></th>
+            <th></th>
+            <th></th>
         </tr>
-    {% empty %}
-        <h3>No Items in List!</h3>
-    {% endfor %}
+        {% for task in uncompleted_tasks %}
+            <tr>
+                <td>{{task.title}}</td>
+                <td><a href="{% url 'task-update' task.id %}">Edit</a></td>
+                <td><a href="{% url 'task-delete' task.id %}">Delete</a></td>
+            </tr>
+        {% empty %}
+            <h3>No Items in List!</h3>
+        {% endfor %}
 
-</table>
+    </table>
+
+{% endblock content %}
 
 </body>
 </html>

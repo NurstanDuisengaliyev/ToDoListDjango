@@ -9,6 +9,7 @@ urlpatterns = [
     path("register/", RegisterView.as_view(), name="register"),
 
 
+    path("", CustomLoginView.as_view(), name="login"),
     path("admin/", admin.site.urls),
     path("tasks/", TaskListView.as_view(), name="tasks-page"),
     path("tasks/<int:pk>/", TaskDetailView.as_view(), name="task"),
